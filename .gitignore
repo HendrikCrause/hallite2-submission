@@ -102,4 +102,5 @@ ENV/
 
 .idea
 *.log
-games/replay*
+*.bot
+games/*

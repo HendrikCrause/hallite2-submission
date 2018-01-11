@@ -1,6 +1,7 @@
 import argparse
 import json
 import os
+import glob
 import subprocess
 import zstd
 
@@ -15,15 +16,19 @@ def run_halite_game(bots=(), cleanup=False):
     ]
 
     for bot in bots:
-        command.append('"python3 MyBot.py --name {}"'.format(bot))
+        command.append('"python3 bots/bot.py --uuid {}"'.format(bot))
 
     run = subprocess.run(' '.join(command), stdout=subprocess.PIPE, shell=True)
     result = json.loads(run.stdout.decode())
 
     if cleanup:
         os.remove(result['replay'])
+        for file in glob.glob(r'./*.log'):
+            os.remove(file)
     else:
         os.rename(result['replay'], './games' + result['replay'][1:])
+        for file in glob.glob(r'./*.log'):
+            os.rename(file, './logs' + file[1:])
 
     return result
 
