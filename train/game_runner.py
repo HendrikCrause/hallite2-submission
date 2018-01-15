@@ -33,6 +33,10 @@ def run_halite_game(bots=(), cleanup=False):
     return result
 
 
+def determine_ranks(result, bots):
+    return dict([(result['stats'][str(idx)]['rank'], bots[idx]) for idx in range(len(bots))])
+
+
 def uncompress_replay(filename):
     with open(filename, 'rb') as replay:
         raw_replay_data = zstd.loads(replay.read())
@@ -56,6 +60,4 @@ if __name__ == '__main__':
 
     result = run_halite_game(bots)
     print(result)
-
-    ranks = dict([(bots[idx], result['stats'][str(idx)]['rank']) for idx in range(len(bots))])
-    print(ranks)
+    print(determine_ranks(result, bots))
