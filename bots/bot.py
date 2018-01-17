@@ -40,7 +40,6 @@ class Bot:
                     angle = int(round(abs(result[1]) * 360))
                     ship_command = ship.thrust(speed, angle)
 
-                logging.info(ship_command)
                 command_queue.append(ship_command)
 
             self.game.send_command_queue(command_queue)
@@ -80,12 +79,13 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--uuid", help="Bot uuid which should correspond to a saved structure file")
     args = parser.parse_args()
+    name = args.uuid
 
     try:
-        with open('../temp/' + args.uuid + '.bot') as file:
-            name = args.uuid
+        with open('temp/' + args.uuid + '.bot') as file:
             structure = json.loads(file.read())
-    except Exception:
+    except Exception as e:
+        logging.error(e)
         name = 'RandomBot'
         structure = None
 
